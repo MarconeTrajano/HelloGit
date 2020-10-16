@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2, ViewChild } from '@angular/core';
 import { AnimationController, Platform } from '@ionic/angular';
 
 @Component({
@@ -7,6 +7,9 @@ import { AnimationController, Platform } from '@ionic/angular';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+
+  @ViewChild('blocks') blocks: any
+  @ViewChild('background') background: any
 
   public options: Array<any> = [
     { icon: 'person-add-outline', text: 'Indicar amigos' },
@@ -30,13 +33,43 @@ export class HomePage {
 
   initialStep: number = 0
   maxTranslate: number
-  animation: Animation
+  private animation: Animation
 
   constructor(
     private animationCtrl: AnimationController,
-    private platform: Platform
+    private platform: Platform,
+    private renderer: Renderer2
   ) {
     this.maxTranslate = this.platform.height() - 200
+
+    console.log("TESTE", this.background)
+  }
+
+  ngAfterViewInit() {
+    this.createAnimation()
+  }
+
+  toggleBlocks() {
+    this.initialStep = this.initialStep === 0 ? this.maxTranslate : 0;
+
+    this.animation.direction(this.initialStep === 0 ? 'reverse' : 'normal').play();
+
+    this.setBackgroundOpacity()
+  }
+
+  createAnimation() {
+    this.animation = this.animationCtrl.create()
+      .addElement(this.blocks.nativeElement)
+      .duration(300)
+      .fromTo('transform', 'translateY(0)', `translateY(${this.maxTranslate}px)`)
+  }
+
+  setBackgroundOpacity() {
+    this.renderer.setStyle(this.background.nativeElement, 'opacity', this.initialStep === 0 ? '0' : '1')
+  }
+
+  fixedBlocks(): boolean {
+    return this.initialStep === this.maxTranslate
   }
 
 }

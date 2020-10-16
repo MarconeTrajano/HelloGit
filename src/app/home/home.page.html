@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content color="primary" class="ion-padding">
-  <div class="background">
+  <div #background class="background opacity-transition">
     <div class="bank-information ion-text-center">
       <img class="qr-code" src="/assets/qr-code.png" alt="">
 
@@ -33,7 +33,7 @@
     </ion-button>
   </div>
 
-  <div class="blocks">
+  <div #blocks class="blocks" [ngClass]="fixedBlocks() ? 'fixed' : null">
     <ion-card>
       <ion-item class="ion-margin-vertical" lines="none">
         <ion-icon slot="start" name="card-outline"></ion-icon>
@@ -106,9 +106,9 @@
 
 </ion-content>
 
-<ion-footer class="ion-no-border">
+<ion-footer [ngClass]="initialStep > 0 ? 'hidden' : null" class="ion-no-border">
   <ion-toolbar color="primary" class="ion-no-margin ion-padding-vertical">
-    <ion-slides [options]="slideOptions">
+    <ion-slides class="opacity-transition" [options]="slideOptions">
       <ion-slide *ngFor="let option of options">
         <div class="container ion-text-left">
           <ion-icon [name]="option.icon"></ion-icon>
