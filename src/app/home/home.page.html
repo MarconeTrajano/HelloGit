@@ -22,7 +22,7 @@
     </div>
 
     <ion-list lines="full">
-      <ion-item *ngFor="let item of items" detail>
+      <ion-item #swipeDown *ngFor="let item of items" detail>
         <ion-icon slot="start" [name]="item.icon"></ion-icon>
         <ion-label>{{item.text}}</ion-label>
       </ion-item>
